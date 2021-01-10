@@ -17,13 +17,23 @@ body{background: rgb(231, 231, 231);}
   .booking{
     flex-direction: row;
   }
+
+  .returndate{
+    padding-right: 15vw;
+    padding-left: 5vw;
+  }
+  
+  .renewButton{
+    right: 10vw;
+    position: absolute;
+  }
 }
 
 .booking {
-  max-width: 70vw;
+  width: 60vw;
   display: flex;
-  align-items: right;                            
-  justify-content: right;
+  align-items: center;                          
+  justify-content: space-around; 
   margin-left: auto;
   margin-right: auto;
   margin-top: 5vh;
@@ -37,15 +47,6 @@ body{background: rgb(231, 231, 231);}
   background-color: rgb(250, 250, 250);
   box-shadow: 10px 10px 5px  rgb(196, 196, 196);
   border-radius: 2em;
-  vertical-align: middle;
-}
-
-.conbookingtainer a:hover {
-  color: blue;
-}
-
-.icon {
-  size: auto;
 }
 
 .booktitle {
