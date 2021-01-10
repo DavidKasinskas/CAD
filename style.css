@@ -22,8 +22,8 @@ body{background: rgb(231, 231, 231);}
 .booking {
   max-width: 70vw;
   display: flex;
-  align-items: center;                            
-  justify-content: space-around; 
+  align-items: right;                            
+  justify-content: right;
   margin-left: auto;
   margin-right: auto;
   margin-top: 5vh;
@@ -36,9 +36,6 @@ body{background: rgb(231, 231, 231);}
   border: solid 1px lightgrey;
   background-color: rgb(250, 250, 250);
   box-shadow: 10px 10px 5px  rgb(196, 196, 196);
-  -moz-box-shadow: 10px 10px 5px   rgb(196, 196, 196);
-  -webkit-box-shadow: 10px 10px 5px  rgb(196, 196, 196);
-  -o-box-shadow: 10px 10px 5px rgb(196, 196, 196);
   border-radius: 2em;
   vertical-align: middle;
 }

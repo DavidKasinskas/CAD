@@ -23,7 +23,8 @@
 
     <script>
         //test username - need to fill in with the login success username 
-        getUserLoans("123123123123123");
+        var username = "123123123123123";
+        getUserLoans(username);
 
         function processRes(response, param) {
             if (response.status === 200) {
@@ -36,23 +37,31 @@
                             renewOutput(data);
                         }
                     })
-                    .catch(function (data) { alert(data.message) });
+                .catch(function (data) { alert("Exception: " + data.message) });
             } else {
                 console.log(status);
                 alert("Google Cloud Function Problem.");
             }
         }
 
-        //iterate through the google dataset loanbook table to pull out the record of a specific user 
+        //iterate through the returned data in the POST request to pull out the record of a specific user 
         function loadAllFromTable(data) {
-            //!!! Examples -- IMPLEMENTATION NEEDED
-            var div1 = addBook("test_book_id", "test_title_value1", "test_date_value1");
-            var div2 = addMagazine("test_book_id", "test_title_value2", "test_date_value2");
-            var div3 = addReport("test_book_id", "test_title_value3", "test_date_value3");
-            var listing = `<div>${data}</div>`; //temporarily for testing
-            listing += div1;
-            listing += div2;
-            listing += div3;
+            var listing = ``;
+
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            JSON.parse(data["message"]).forEach(function (jsonElement) {
+                var type = jsonElement["Type"]
+                var bookID = jsonElement["ID"]; 
+                var title = jsonElement["Title"];
+                var date = (new Date(jsonElement["date"])).toLocaleDateString("en-UK", options);
+                if(type === "Books"){
+                    listing += addBook(bookID, title, date);
+                }else if(type === "Report") {
+                    listing += addReport(bookID, title, date);
+                }else if(type !== "Books" && type !== "Report") {
+                    listing += addGeneral(bookID, title, date);
+                }
+            });
             document.getElementById("container").innerHTML += listing;
         }
 
@@ -83,7 +92,7 @@
                 },
                 body: JSON.stringify({
                     username: username,
-                    id: book_id 
+                    id: book_id
                 })
             })
                 .then((res) => processRes(res, "renew"));
@@ -95,18 +104,6 @@
             var bodyhtml = `
                 <div class="booking">
                     <link rel="shortcut icon" type="image/x-icon" href="iconJournal.ico"/>
-                    ${content}
-                </div>
-                `;
-            return bodyhtml;
-        }
-
-        //create a booking component with magazine icon
-        function addMagazine(book_id, title, date) {
-            var content = loadContent(book_id, title, date);
-            var bodyhtml = `
-                <div class="booking">
-                    <link rel="shortcut icon" type="image/x-icon" href="iconMagazine.ico"/>
                     ${content}
                 </div>
                 `;
@@ -125,9 +122,21 @@
             return bodyhtml;
         }
 
+        //create a booking component for book types other than books and reports
+        function addGeneral(book_id, title, date) {
+            var content = loadContent(book_id, title, date);
+            var bodyhtml = `
+                <div class="booking">
+                    <link rel="shortcut icon" type="image/x-icon" href="iconMagazine.ico"/>
+                    ${content}
+                </div>
+                `;
+            return bodyhtml;
+        }
+
         function loadContent(book_id, title, date) {
             return `
-                <a class="booktitle" href="" >${title}</a>
+                <p class="booktitle">${title}</p>
                 <p class="returndate">Return Date: <br> ${date}</p>
                 <button class="renewButton" onclick="renewBook(${username}, ${book_id})">RENEW</button>
                 `;
