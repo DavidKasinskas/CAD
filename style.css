@@ -1,0 +1,79 @@
+body{background: rgb(231, 231, 231);}
+
+.main {
+  background: rgb(240, 240, 240);
+  height: 100vh;
+  margin-left: 15vw; 
+  padding: 10vh 5vw;
+}
+
+@media (max-width: 600px) {
+  .booking{
+    flex-direction: column;
+  }
+}
+
+@media (min-width: 600px) {
+  .booking{
+    flex-direction: row;
+  }
+}
+
+.booking {
+  max-width: 70vw;
+  display: flex;
+  align-items: center;                            
+  justify-content: space-around; 
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 5vh;
+  margin-bottom: 5vh;
+  padding-top: 1vh;
+  padding-bottom: 1vh;
+  padding-left: 3vw;
+  padding-right: 3vw;
+  height: auto;
+  border: solid 1px lightgrey;
+  background-color: rgb(250, 250, 250);
+  box-shadow: 10px 10px 5px  rgb(196, 196, 196);
+  -moz-box-shadow: 10px 10px 5px   rgb(196, 196, 196);
+  -webkit-box-shadow: 10px 10px 5px  rgb(196, 196, 196);
+  -o-box-shadow: 10px 10px 5px rgb(196, 196, 196);
+  border-radius: 2em;
+  vertical-align: middle;
+}
+
+.conbookingtainer a:hover {
+  color: blue;
+}
+
+.icon {
+  size: auto;
+}
+
+.booktitle {
+  overflow: hidden;
+  color: darkslategray;
+}
+
+.returndate {
+  color: black;
+  font-size: small;
+  font-weight: bold;
+  font-family: Georgia, 'Times New Roman', Times;
+}
+
+.renewButton {
+  padding-left: 2vw;
+  padding-right: 2vw;
+  border-radius: 5em;
+  background-color: royalblue;
+  color: white;
+  display: block;
+  height: 10vh;
+}
+
+.renewButton:hover {
+  background-color: mediumblue;
+  cursor: pointer;
+}

@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Test</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+
+    <div id="container" class="main"></div>
+
+    <script>
+        //test username - need to fill in with the login success username 
+        getUserLoans("123123123123123");
+
+        function processRes(response, param) {
+            if (response.status === 200) {
+                response.json()
+                    .then(function (data) {
+                        console.log(data);
+                        if (param === "loans") {
+                            loadAllFromTable(data);
+                        } else if (param === "renew") {
+                            renewOutput(data);
+                        }
+                    })
+                    .catch(function (data) { alert(data.message) });
+            } else {
+                console.log(status);
+                alert("Google Cloud Function Problem.");
+            }
+        }
+
+        //iterate through the google dataset loanbook table to pull out the record of a specific user 
+        function loadAllFromTable(data) {
+            //!!! Examples -- IMPLEMENTATION NEEDED
+            var div1 = addBook("test_book_id", "test_title_value1", "test_date_value1");
+            var div2 = addMagazine("test_book_id", "test_title_value2", "test_date_value2");
+            var div3 = addReport("test_book_id", "test_title_value3", "test_date_value3");
+            var listing = `<div>${data}</div>`; //temporarily for testing
+            listing += div1;
+            listing += div2;
+            listing += div3;
+            document.getElementById("container").innerHTML += listing;
+        }
+
+        function renewOutput() {
+            alert(data);
+        }
+
+        function getUserLoans(username) {
+            fetch('https://europe-west2-bookit-297317.cloudfunctions.net/getuserloans', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username
+                })
+            })
+                .then((res) => processRes(res, "loans"));
+        }
+
+        function renewBook(username, book_id) {
+            fetch('https://europe-west2-bookit-297317.cloudfunctions.net/renewbook', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username,
+                    id: book_id 
+                })
+            })
+                .then((res) => processRes(res, "renew"));
+        }
+
+        //create a booking component with book icon
+        function addBook(book_id, title, date) {
+            var content = loadContent(book_id, title, date);
+            var bodyhtml = `
+                <div class="booking">
+                    <link rel="shortcut icon" type="image/x-icon" href="iconJournal.ico"/>
+                    ${content}
+                </div>
+                `;
+            return bodyhtml;
+        }
+
+        //create a booking component with magazine icon
+        function addMagazine(book_id, title, date) {
+            var content = loadContent(book_id, title, date);
+            var bodyhtml = `
+                <div class="booking">
+                    <link rel="shortcut icon" type="image/x-icon" href="iconMagazine.ico"/>
+                    ${content}
+                </div>
+                `;
+            return bodyhtml;
+        }
+
+        //create a booking component with report icon
+        function addReport(book_id, title, date) {
+            var content = loadContent(book_id, title, date);
+            var bodyhtml = `
+                <div class="booking">
+                    <link rel="shortcut icon" type="image/x-icon" href="iconReport.ico"/>
+                    ${content}
+                </div>
+                `;
+            return bodyhtml;
+        }
+
+        function loadContent(book_id, title, date) {
+            return `
+                <a class="booktitle" href="" >${title}</a>
+                <p class="returndate">Return Date: <br> ${date}</p>
+                <button class="renewButton" onclick="renewBook(${username}, ${book_id})">RENEW</button>
+                `;
+        }
+    </script>
+</body>
+
+</html>
