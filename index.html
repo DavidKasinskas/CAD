@@ -12,6 +12,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -54,13 +55,7 @@
                 var bookID = jsonElement["ID"]; 
                 var title = jsonElement["Title"];
                 var date = (new Date(jsonElement["date"])).toLocaleDateString("en-UK", options);
-                if(type === "Books"){
-                    listing += addBook(bookID, title, date);
-                }else if(type === "Report") {
-                    listing += addReport(bookID, title, date);
-                }else if(type !== "Books" && type !== "Report") {
-                    listing += addGeneral(bookID, title, date);
-                }
+                listing += addLoanComponent(type, bookID, title, date);
             });
             document.getElementById("container").innerHTML += listing;
         }
@@ -98,48 +93,36 @@
                 .then((res) => processRes(res, "renew"));
         }
 
-        //create a booking component with book icon
-        function addBook(book_id, title, date) {
-            var content = loadContent(book_id, title, date);
-            var bodyhtml = `
-                <div class="booking">
-                    <link rel="shortcut icon" type="image/x-icon" href="iconBook.ico"/>
-                    ${content}
-                </div>
-                `;
-            return bodyhtml;
-        }
-
-        //create a booking component with report icon
-        function addReport(book_id, title, date) {
-            var content = loadContent(book_id, title, date);
-            var bodyhtml = `
-                <div class="booking">
-                    <link rel="shortcut icon" type="image/x-icon" href="iconReport.ico"/>
-                    ${content}
-                </div>
-                `;
-            return bodyhtml;
-        }
-
-        //create a booking component for book types other than books and reports
-        function addGeneral(book_id, title, date) {
-            var content = loadContent(book_id, title, date);
-            var bodyhtml = `
-                <div class="booking">
-                    <link rel="shortcut icon" type="image/x-icon" href="iconGeneral.ico"/>
-                    ${content}
-                </div>
-                `;
-            return bodyhtml;
-        }
-
-        function loadContent(book_id, title, date) {
-            return `
+        //create a loan component with type icon, book title, return date, renew button
+        function addLoanComponent(type, book_id, title, date) {
+            var content = `
                 <p class="booktitle">${title}</p>
                 <p class="returndate">Return Date: <br> ${date}</p>
                 <button class="renewButton" onclick="renewBook(${username}, ${book_id})">RENEW</button>
                 `;
+            if(type === "Books"){
+                var bodyhtml = `
+                <div class="booking">
+                    <i class="fas fa-book"></i>
+                    ${content}
+                </div>
+                `;
+            }else if(type === "Newspapers"){
+                var bodyhtml = `
+                <div class="booking">
+                    <i class="far fa-newspaper"></i>
+                    ${content}
+                </div>
+                `;
+            }else {
+                var bodyhtml = `
+                <div class="booking">
+                    <i class="fas fa-file-alt"></i>
+                    ${content}
+                </div>
+                `;
+            }
+            return bodyhtml;
         }
     </script>
 </body>
