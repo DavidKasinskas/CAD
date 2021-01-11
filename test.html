@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    </head>
+    <body>
+        <h1>Hello World</h1>
+
+        <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        
+        <script>
+        $(document).ready(() => {
+            console.log("Testing Change Password...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/changepassword",
+                data: JSON.stringify({
+                    username: 'user',
+                    password: 'password',
+                    newpassword: 'password2'
+                }),
+                success: (response) => {
+                    console.log("Change Password response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Change Username...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/changeusername",
+                data: JSON.stringify({
+                    username: 'user',
+                    password: 'password',
+                    newusername: 'user2'
+                }),
+                success: (response) => {
+                    console.log("Change Username response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            // console.log("Testing Delete User...");
+            // $.ajax({
+            //     type: "POST",
+            //     crossDomain:true,
+            //     headers:{
+            //         'Content-Type': 'application/json'
+            //     },
+            //     url: "https://europe-west2-bookit-297317.cloudfunctions.net/deleteuser",
+            //     data: JSON.stringify({
+            //         username: 'user',
+            //     }),
+            //     success: (response) => {
+            //         console.log("Delete username response:")
+            //         console.log(response);
+            //         // console.log(JSON.parse(response.message))
+            //     },
+            // });
+
+            console.log("Testing Get User Loans...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/getuserloans",
+                data: JSON.stringify({
+                    username: 'user',
+                }),
+                success: (response) => {
+                    console.log("Get User Loans response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Loan Book...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/loanbook",
+                data: JSON.stringify({
+                    username: 'user',
+                    id: '12296'
+                }),
+                success: (response) => {
+                    console.log("Loan Book response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+            
+            console.log("Testing Login...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/login",
+                data: JSON.stringify({
+                    username: 'user',
+                    password: 'password'
+                }),
+                success: (response) => {
+                    console.log("Login response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Overdue Books...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/overduebooks",
+                data: JSON.stringify({
+                    username: 'user',
+                }),
+                success: (response) => {
+                    console.log("Overdue Books response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Register...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/register",
+                data: JSON.stringify({
+                    username: 'user',
+                    password: 'password'
+                }),
+                success: (response) => {
+                    console.log("Register response:")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Renew Book...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/renewbook",
+                data: JSON.stringify({
+                    username: 'user',
+                    id: '12296'
+                }),
+                success: (response) => {
+                    console.log("Renew Book response")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Return Book...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/returnbook",
+                data: JSON.stringify({
+                    username: 'user',
+                    id: '12296'
+                }),
+                success: (response) => {
+                    console.log("Return Book response")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+
+            console.log("Testing Search...");
+            $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/search",
+                data: JSON.stringify({
+                    username: 'user',
+                    entries: 10,
+                    start:0,
+                    title: '',
+                    publisher: '',
+                    location: '',
+                    issn: '',
+                    eissn: '',
+                    isbn: '',
+                    type: '',
+                    language: '',
+                    subjects: '',
+                    id: '12296',
+                    url: ''
+                }),
+                success: (response) => {
+                    console.log("Search response")
+                    console.log(response);
+                    // console.log(JSON.parse(response.message))
+                },
+            });
+        });
+        </script>
+        <script src="" async defer></script>
+
+    </body>
+</html>
