@@ -57,8 +57,11 @@
                     }),
                     success: (response) => {
                         console.log("Success Login")
-                        if (response == "success") {
+                        console.log(response);
+
+                        if (response.success == true) {
                             localStorage.setItem("username", username);
+                            window.location.href = "./search.html";
                         }
                     }
                 })

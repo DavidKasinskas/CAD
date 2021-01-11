@@ -37,32 +37,55 @@
     function register() {
       console.log("register")
       let username = $("#username").val();
-      let password = $("password").val();
-      let password2 = $("password2").val();
-      if (password != password2) {
-        pwdError.show();
-      } else if (username != "") {
-        $.ajax({
-          type: "POST",
-          crossDomain: true,
-          headers: {
-            "Content-Type": "application/json",
-          },
-          url: "https://europe-west2-bookit-297317cloudfunctions.net/register",
-          data: JSON.stringify({
-            username: username,
-            password: password,
-          }),
-          success: (response) => {
-            console.log(response);
-            if (response == "True") {
-              localStorage.setItem("username", username);
-            } else {
-              console.log("failed to register")
-            }
-          }
-        });
-      }
+      let password = $("#password").val();
+      let password2 = $("#password2").val();
+      // if (password != password2) {
+      //   pwdError.show();
+      // } else if (username != "") {
+      //   $.ajax({
+      //     type: "POST",
+      //     crossDomain: true,
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //     },
+      //     url: "https://europe-west2-bookit-297317cloudfunctions.net/register",
+      //     data: JSON.stringify({
+      //       username: username,
+      //       password: password,
+      //     }),
+      //     success: (response) => {
+      //       console.log(response);
+      //       if (response == "True") {
+      //         localStorage.setItem("username", username);
+      //       } else {
+      //         console.log("failed to register")
+      //       }
+      //     }
+      //   });
+      // }
+      console.log(username);
+      console.log(password);
+      $.ajax({
+                type: "POST",
+                crossDomain:true,
+                headers:{
+                    'Content-Type': 'application/json'
+                },
+                url: "https://europe-west2-bookit-297317.cloudfunctions.net/register",
+                data: JSON.stringify({
+                    username: JSON.stringify(username),
+                    password: JSON.stringify(password) 
+                }),
+                success: (response) => {
+                    console.log("Register response:")
+                    console.log(response);
+                    if (response.success == true) {
+                      localStorage.setItem("username", username);
+                      window.location.href = "./search.html";
+                    }
+                    // console.log(JSON.parse(response.message))
+                },
+            });
     }
   </script>
 </body>

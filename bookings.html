@@ -51,7 +51,7 @@
             </div></div>
     <script>
         // !!! test username - need to fill in with the login success username 
-        var username = "123123123123123";
+        var username = localStorage.getItem("username");
         getUserLoans(username);
 
         function processRes(response, param) {

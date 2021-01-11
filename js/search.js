@@ -2,7 +2,7 @@ $(document).ready(() => {
 	searchBooks(defaultFilter);
 });
 let defaultFilter = {
-	username: "123123123123123",
+	username: localStorage.getItem("username"),
 	entries: 10,
 	start: 0,
 	title: "",
@@ -79,6 +79,7 @@ function populateTable(books) {
 }
 function loan(bookID) {
 	console.log(bookID);
+	let username = localStorage.getItem("username");
 	$.ajax({
 		type: "POST",
 		crossDomain: true,
@@ -87,7 +88,7 @@ function loan(bookID) {
 		},
 		url: "https://europe-west2-bookit-297317.cloudfunctions.net/loanbook",
 		data: JSON.stringify({
-			username: "user",
+			username: username,
 			id: bookID,
 		}),
 		success: (response) => {
