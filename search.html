@@ -1,8 +1,4 @@
 <!DOCTYPE html>
-<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
-<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
-<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
-<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
 <html>
     <head>
         <meta charset="utf-8">
@@ -16,6 +12,7 @@
         <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
         <script src="./js/search.js"></script>
         <link rel="stylesheet" href="./css/sidebar.css">
+        <link rel="stylesheet" href="./css/search.css">
     </head>
 
     <div class="wrapper">
@@ -37,8 +34,33 @@
                 </li>
             </ul>
         </nav>
-        <div id="content" class=" container-fluid align-middle text-center">
-            <h1>Content</h1>
+        <div id="content" class=" container-fluid vertical-center text-center">
+            <div class="container text-center">
+                <div class="card">
+                    <div class="card-header">
+                            <div class="mb-2">
+                                <input id="search-box" class="form-control form-control-sm w-25" type="text" placeholder="Search" aria-label="Search">
+                            </div>
+                    </div>
+                    <div class="card-body">
+                        <table class="table table-hover borderless">
+                            <thead class="thead">
+                            <tr>
+                                <th scope="col">Type</th>
+                                <th scope="col">Title</th>
+                                <th scope="col">Publisher</th>
+                                <th scope="col">Subjects</th>
+                                <th scope="col">Language</th>
+                                <th scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody id="tableBody">
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
         </div>
     </div>
 

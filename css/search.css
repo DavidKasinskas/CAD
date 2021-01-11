@@ -1,0 +1,8 @@
+.borderless td,
+.borderless th {
+	border: none;
+}
+
+.table > tbody > tr > td {
+	vertical-align: middle;
+}

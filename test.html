@@ -146,7 +146,7 @@
                 }),
                 success: (response) => {
                     console.log("Overdue Books response:")
-                    console.log(response);
+                    console.log(JSON.parse(response.message));
                     // console.log(JSON.parse(response.message))
                 },
             });
