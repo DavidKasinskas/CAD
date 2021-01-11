@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Test</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <section class="Form">
+        <div class="container">
+            <div class="logo">
+                <div><img id="logo" src="./BookIT_Logo.png"></div>
+                <div><label id="label">BookIT</label></div>
+            </div>
+            <div class="input">
+                <div class="row">
+                    <label for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                </div>
+                <div class="row">
+                    <label for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </div>
+            </div>
+            <div class="row">
+                <button id="login_button" onclick="submit('login')">Login</button>
+            </div>
+            <div class="row">
+                <button id="register_button" onclick="submit('register')">Register</button>
+            </div>
+            <label id="alert_msg"></label>
+
+
+        </div>
+    </section>
+    <script>
+        function submit(action) {
+            let username = $("#username").val();
+            let password = $("#password").val();
+            // if username or password is empty shows a message
+            if (username == "") {
+                document.getElementById("alert_msg").innerHTML = "Username cannot be empty";
+            } else if (password == "") {
+                document.getElementById("alert_msg").innerHTML = "Password cannot be empty";
+            } else {
+                // depends on the parameter, call different api
+                if (action == "login") {
+                    $.ajax({
+                        type: "POST",
+                        url: "https://europe-west2-bookit-297317.cloudfunctions.net/login",
+                        data: JSON.stringify({
+                            username: username,
+                            password: password,
+                        }),
+                        success: (response) => {
+                            if (response.status == 200) {
+                                console.log("Success Login")
+                                localStorage.setItem("username", username);
+                                // jump to the index page
+                                // window.location.href = '';
+                            } else {
+                                document.getElementById("alert_msg").innerHTML = response.data;
+                            }
+                        }
+                    })
+                } else if (action == "register") {
+                    $.ajax({
+                        type: "POST",
+                        url: "https://europe-west2-bookit-297317.cloudfunctions.net/register",
+                        data: JSON.stringify({
+                            username: username,
+                            password: password,
+                        }),
+                        success: (response) => {
+                            if (response.status == 200) {
+                                console.log("Success register")
+                                localStorage.setItem("username", username);
+                                // window.location.href = '';
+                            } else {
+                                document.getElementById("alert_msg").innerHTML = response.data;
+                            }
+                        }
+                    })
+                }
+            }
+        }
+    </script>
+</body>
+<style type="text/css">
+    #label {
+        color: #3b81eb;
+        font-size: 55px;
+    }
+
+    input {
+        border-radius: 25px;
+        outline: none;
+        margin-top: 20px;
+    }
+
+    button {
+        border-radius: 25px;
+        color: white;
+        height: 35px;
+        width: 100px;
+        margin-top: 15px;
+    }
+
+    #login_button {
+        background-color: #72de2a;
+        border-color: #72de2a;
+        outline: none;
+    }
+
+    #register_button {
+        background-color: #2a66de;
+        border-color: #2a66de;
+        outline: none;
+    }
+
+    .Form {
+        margin-top: 100px;
+        text-align: center;
+    }
+
+    #alert_msg {
+        color: #eb4034;
+    }
+</style>
+
+</html>
