@@ -8,7 +8,7 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Test</title>
+    <title>Bookings</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
@@ -23,7 +23,7 @@
     <div id="container" class="main"></div>
 
     <script>
-        //test username - need to fill in with the login success username 
+        // !!! test username - need to fill in with the login success username 
         var username = "123123123123123";
         getUserLoans(username);
 
@@ -35,7 +35,8 @@
                         if (param === "loans") {
                             loadAllFromTable(data);
                         } else if (param === "renew") {
-                            renewOutput(data);
+                            alert(data["message"]);
+                            location.reload();
                         }
                     })
                 .catch(function (data) { alert("Exception: " + data.message) });
@@ -60,10 +61,6 @@
             document.getElementById("container").innerHTML += listing;
         }
 
-        function renewOutput() {
-            alert(data);
-        }
-
         function getUserLoans(username) {
             fetch('https://europe-west2-bookit-297317.cloudfunctions.net/getuserloans', {
                 method: 'POST',
@@ -78,7 +75,7 @@
                 .then((res) => processRes(res, "loans"));
         }
 
-        function renewBook(username, book_id) {
+        function renewBook(name, book_id) {
             fetch('https://europe-west2-bookit-297317.cloudfunctions.net/renewbook', {
                 method: 'POST',
                 headers: {
@@ -86,7 +83,7 @@
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    username: username,
+                    username: name,
                     id: book_id
                 })
             })
