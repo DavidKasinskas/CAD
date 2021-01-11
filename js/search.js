@@ -2,7 +2,7 @@ $(document).ready(() => {
 	searchBooks(defaultFilter);
 });
 let defaultFilter = {
-	username: "user",
+	username: "123123123123123",
 	entries: 10,
 	start: 0,
 	title: "",
@@ -20,6 +20,8 @@ let defaultFilter = {
 };
 
 function searchBooks(filter) {
+	$("#tableLoading").show();
+	$("#tableBody").empty();
 	$.ajax({
 		type: "POST",
 		crossDomain: true,
@@ -30,6 +32,7 @@ function searchBooks(filter) {
 		data: JSON.stringify(filter),
 		success: (response) => {
 			let books = JSON.parse(response.message);
+
 			console.log(books);
 			populateTable(books);
 		},
@@ -39,7 +42,7 @@ function searchBooks(filter) {
 function populateTable(books) {
 	let tableBody = $("#tableBody");
 	tableBody.empty();
-
+	$("#tableLoading").hide();
 	books.forEach((book) => {
 		let loanBtn =
 			"<input onclick=loan('" +

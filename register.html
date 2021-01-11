@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Test</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+    integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div><img id="logo" src="./BookIT_Logo.png"></div>
+    <div><label id="label">BookIT</label></div>
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" name="username" id="username">
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" name="password" id="password">
+    </div>
+    <div class="form-group">
+      <label for="confirm_password">Confirm Password</label>
+      <input type="password" name="confirm_password" id="confirm_password">
+    </div>
+    <input id="register_button" class="btn btn-primary" type="button"onclick="register()" value="Register" >
+
+
+  </div>
+
+  <script>
+    function register() {
+      console.log("register")
+      let username = $("#username").val();
+      let password = $("password").val();
+      let password2 = $("password2").val();
+      if (password != password2) {
+        pwdError.show();
+      } else if (username != "") {
+        $.ajax({
+          type: "POST",
+          crossDomain: true,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          url: "https://europe-west2-bookit-297317cloudfunctions.net/register",
+          data: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+          success: (response) => {
+            console.log(response);
+            if (response == "True") {
+              localStorage.setItem("username", username);
+            } else {
+              console.log("failed to register")
+            }
+          }
+        });
+      }
+    }
+  </script>
+</body>
+
+<style>
+  #label {
+    color: #3b81eb;
+    font-size: 55px;
+  }
+
+  input {
+    border-radius: 25px;
+    outline: none;
+  }
+
+  button {
+    border-radius: 25px;
+    color: white;
+  }
+
+  #register_button {
+    background-color: #2a66de;
+    border-color: #2a66de;
+    outline: none;
+  }
+</style>
+
+</html>

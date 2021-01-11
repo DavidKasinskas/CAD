@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>BookIT</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="./css/sidebar.css">
+
+</head>
+
+<body>
+    <div class="main container-fluid vertical-center text-center">
+        <div class="container">
+            <img id="logo" src="BookIT_Logo.png" alt="">
+            <div><label id="label">BookIT</label></div>
+            <form>
+                <div>
+                    <label  for="username">Username</label>
+                    <input type="text" name="username" id="username">
+                </div>
+                <div>
+                    <label class="text-left" for="password">Password</label>
+                    <input type="password" name="password" id="password">
+                </div>
+    
+                <input class="btn btn-success" type="button" id="login_button" onclick="login()" value="Login">
+                <input id="register_button" class="btn btn-primary" type="button" onclick='window.location.href="./register.html"' value="Register" >
+    
+            </form>
+        </div>
+        </div>
+       
+
+    <script>
+        function login() {
+            console.log("login");
+            let username = $("#username").val();
+            let password = $("#password").val();
+            console.log("username: " + username + " password: " + password);
+            if (username != "" && password != "") {
+                $.ajax({
+                    type: "POST",
+                    crossDomain: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    url: "https://europe-west2-bookit-297317.cloudfunctions.net/login",
+                    data: JSON.stringify({
+                        username: username,
+                        password: password,
+                    }),
+                    success: (response) => {
+                        console.log("Success Login")
+                        if (response == "success") {
+                            localStorage.setItem("username", username);
+                        }
+                    }
+                })
+            }
+        }
+    </script>
+</body>
+<style type="text/css">
+    .main {
+        top: 50%;
+        left: 50%;
+    }
+
+    #label {
+        color: #3b81eb;
+        font-size: 30px;
+    }
+
+    input {
+        border-radius: 25px;
+        outline: none;
+    }
+
+    button {
+        border-radius: 25px;
+        color: white;
+    }
+
+    #login_button {
+        background-color: #72de2a;
+        border-color: #72de2a;
+        outline: none;
+    }
+
+    #register_button {
+        background-color: #2a66de;
+        border-color: #2a66de;
+        outline: none;
+    }
+</style>
+
+</html>

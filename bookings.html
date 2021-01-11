@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bookings</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="./css/bookings.css">
+    <link href="https://getbootstrap.com/docs/4.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="./css/sidebar.css">
+</head>
+
+<body>
+    <!--[if lt IE 7]>
+            <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="#">upgrade your browser</a> to improve your experience.</p>
+        <![endif]-->
+        <div class="wrapper">
+            <!-- Sidebar -->
+            <nav id="sidebar" class="shadow-lg">
+                <div class="sidebar-header text-center">
+                    <img id="logo" src="./BookIT_Logo.png" alt="" srcset="">
+                    <span id="logo-text">BookIT</span>
+                </div>
+        
+                <ul class="list-unstyled components text-left">
+                    <li onclick='window.location.href="./search.html"'>
+                        <i class="fas fa-search"></i>
+                        <span>Search</span>
+                    </li>
+                <li onclick='window.location.href="./bookings.html"'>
+                    <i class="fas fa-calendar-alt"></i>
+                        <span>Bookings</span>
+                    </li>
+                </ul>
+            </nav>
+            <div id="content" class=" container-fluid vertical-center text-center">
+                <div class="container text-center">
+                    <div id="tableLoading" class="spinner-border text-center"></div>
+                    <div id="container" class="main"></div>
+                </div>
+
+            </div></div>
+    <script>
+        // !!! test username - need to fill in with the login success username 
+        var username = "123123123123123";
+        getUserLoans(username);
+
+        function processRes(response, param) {
+            if (response.status === 200) {
+                response.json()
+                    .then(function (data) {
+                        console.log(data);
+                        if (param === "loans") {
+                            loadAllFromTable(data);
+                        } else if (param === "renew") {
+                            alert(data["message"]);
+                            location.reload();
+                        }
+                    })
+                .catch(function (data) { alert("Exception: " + data.message) });
+            } else {
+                console.log(status);
+                alert("Google Cloud Function Problem.");
+            }
+        }
+
+        //iterate through the returned data in the POST request to pull out the record of a specific user 
+        function loadAllFromTable(data) {
+            $("#tableLoading").hide();
+
+            var listing = ``;
+
+            var options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            JSON.parse(data["message"]).forEach(function (jsonElement) {
+                var type = jsonElement["Type"]
+                var bookID = jsonElement["ID"]; 
+                var title = jsonElement["Title"];
+                var date = (new Date(jsonElement["date"])).toLocaleDateString("en-UK", options);
+                listing += addLoanComponent(type, bookID, title, date);
+            });
+            document.getElementById("container").innerHTML += listing;
+        }
+
+        function getUserLoans(name) {
+            fetch('https://europe-west2-bookit-297317.cloudfunctions.net/getuserloans', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: name
+                })
+            })
+                .then((res) => processRes(res, "loans"));
+        }
+
+        function renewBook(name, book_id) {
+            fetch('https://europe-west2-bookit-297317.cloudfunctions.net/renewbook', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: name,
+                    id: book_id
+                })
+            })
+                .then((res) => processRes(res, "renew"));
+        }
+
+        //create a loan component with type icon, book title, return date, renew button
+        function addLoanComponent(type, book_id, title, date) {
+            var content = `
+                <p class="booktitle">${title}</p>
+                <p class="returndate">Return Date: <br> ${date}</p>
+                <button class="renewButton" onclick="renewBook(${username}, ${book_id})">RENEW</button>
+                `;
+            if(type === "Books"){
+                var bodyhtml = `
+                <div class="booking">
+                    <i class="fas fa-book"></i>
+                    ${content}
+                </div>
+                `;
+            }else if(type === "Newspapers"){
+                var bodyhtml = `
+                <div class="booking">
+                    <i class="far fa-newspaper"></i>
+                    ${content}
+                </div>
+                `;
+            }else {
+                var bodyhtml = `
+                <div class="booking">
+                    <i class="fas fa-file-alt"></i>
+                    ${content}
+                </div>
+                `;
+            }
+            return bodyhtml;
+        }
+    </script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js" integrity="sha384-cs/chFZiN24E4KMATLdqdvsezGxaGsi4hLGOzlXwp5UZB1LY//20VyM2taTB4QvJ" crossorigin="anonymous"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/js/bootstrap.min.js" integrity="sha384-uefMccjFJAIv6A+rW+L4AHf99KvxDjWSu1z9VI8SKNVmz4sk7buKt/6v9KI65qnm" crossorigin="anonymous"></script>
+    
+</body>
+
+</html>
